@@ -7,7 +7,9 @@
 package ar.gob.ambiente.aplicaciones.controlefluentesliquidos.entities;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -16,6 +18,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -28,29 +32,42 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Inmueble implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinColumn(name="establecimiento_id")
-    private Establecimiento establecimiento;
+    private List<Establecimiento> establecimiento;
     
+    @Column (nullable=false, length=20)
+    @NotNull(message = "{entidades.fieldNotNullError}")
+    @Size(message = "{endidades.stringSizeError}", min = 1, max = 20)
     private String partInmob;
     
+    @Column (nullable=false, length=20)
+    @NotNull(message = "{entidades.fieldNotNullError}")
+    @Size(message = "{endidades.stringSizeError}", min = 1, max = 20)
     private String nomCatastral;
     
+    @Column
     private float latitud;
     
+    @Column
     private float longitud;
     
+    @Column
     private int personalFabrica;
     
+    @Column
     private int personalOficina;
     
+    @Column
     private float supCubierta;
     
+    @Column
     private float supLibre;
     
+    @Column
     private boolean radioServido;
     
     public Long getId() {
@@ -61,11 +78,11 @@ public class Inmueble implements Serializable {
         this.id = id;
     }
 
-    public Establecimiento getEstablecimiento() {
+    public List<Establecimiento> getEstablecimiento() {
         return establecimiento;
     }
 
-    public void setEstablecimiento(Establecimiento establecimiento) {
+    public void setEstablecimiento(List<Establecimiento> establecimiento) {
         this.establecimiento = establecimiento;
     }
     

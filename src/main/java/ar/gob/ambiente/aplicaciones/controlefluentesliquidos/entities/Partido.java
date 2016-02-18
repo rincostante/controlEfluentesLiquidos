@@ -7,11 +7,16 @@
 package ar.gob.ambiente.aplicaciones.controlefluentesliquidos.entities;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.OneToMany;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -24,18 +29,21 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Partido implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
+    @Column (nullable=false, unique=true)
+    @NotNull(message = "{entidades.fieldNotNullError}")
     private Long idRt;
     
+    @Column (nullable=false, length=40, unique=true)
+    @NotNull(message = "{entidades.fieldNotNullError}")
+    @Size(message = "{endidades.stringSizeError}", min = 1, max = 40)
     private String nombre;
     
-    /**
-     * private Establecimiento establecimiento[];
-     * Verificar si la definición de este atributo es correcta
-     * generar getter y setter según corresponda  
-     */
+    @OneToMany(mappedBy="partido")
+    private List<Establecimiento> establecimiento;
+
     
     public Long getId() {
         return id;
@@ -59,6 +67,14 @@ public class Partido implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+    
+    public List<Establecimiento> getEstablecimiento() {
+         return establecimiento;
+    }
+    
+    public void setEstablecimiento(List<Establecimiento> establecimiento) {
+         this.establecimiento = establecimiento;
     }
 
     @Override

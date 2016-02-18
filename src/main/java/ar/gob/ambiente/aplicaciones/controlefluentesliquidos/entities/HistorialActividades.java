@@ -31,14 +31,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class HistorialActividades implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne /*(fetch=FetchType.LAZY)*/
     @JoinColumn(name="establecimiento_id")
     private Establecimiento establecimiento;
     
-    @Column (length=2)
+    @Column 
     private boolean accion;
     
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -47,7 +47,7 @@ public class HistorialActividades implements Serializable {
     @Column (length=100)
     private String motivo;
     
-    @Column (length=4)
+    @Column 
     private int tiempoEstimado;
     
     @ManyToOne /*(fetch=FetchType.LAZY)*/

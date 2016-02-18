@@ -7,6 +7,7 @@
 package ar.gob.ambiente.aplicaciones.controlefluentesliquidos.entities;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,11 +17,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -32,7 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Establecimiento implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     @Column (nullable=false, length=20, unique=true)
@@ -45,7 +48,7 @@ public class Establecimiento implements Serializable {
     @Size(message = "{endidades.stringSizeError}", min = 1, max = 20)
     private Long idRupRaz;
     
-    @Column (length=3)
+    @Column 
     private boolean rzJuridica;
     
     @Column (nullable=false, length=40)
@@ -67,20 +70,37 @@ public class Establecimiento implements Serializable {
     @NotNull(message = "Debe existir un firmante")
     private Firmante firmante;
     
-    private HistorialActividades historialActividades;
     
-    private HistorialFirmantes historialFirmantes;
+    @OneToMany(mappedBy="establecimiento")
+    private List<HistorialActividades> historialActividades;
     
+    @OneToMany(mappedBy="establecimiento")
+    private List<HistorialFirmantes> historialFirmantes;
+    
+    @Column
     private long[] historialDeclaraciones;
     
+    @Column (nullable=false)
+    @NotNull(message = "{entidades.fieldNotNullError}")
     private Long numero;
     
+    @ManyToOne
+    @JoinColumn(name="partido_id")
     private Partido partido;
     
+    @Column (nullable=false, length=4)
+    @NotNull(message = "{entidades.fieldNotNullError}")
+    @Size(message = "{endidades.stringSizeError}", min = 1, max = 4)
     private String codPostal;
     
+    @Column (nullable=false, length=11)
+    @NotNull(message = "{entidades.fieldNotNullError}")
+    @Size(message = "{endidades.stringSizeError}", min = 1, max = 11)
     private String partInmob;
     
+    @Column (nullable=false, length=40)
+    @NotNull(message = "{entidades.fieldNotNullError}")
+    @Size(message = "{endidades.stringSizeError}", min = 1, max = 20)
     private String procProduct;
     
     
