@@ -38,7 +38,7 @@ public class AdminEntidad implements Serializable {
     
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="usalta_id", nullable=false)
-    @NotNull(message = "Debe haber un usuario dealta")
+    @NotNull(message = "Debe haber un usuario de alta")
     private Usuario usAlta;
 
     @Temporal(javax.persistence.TemporalType.DATE)
