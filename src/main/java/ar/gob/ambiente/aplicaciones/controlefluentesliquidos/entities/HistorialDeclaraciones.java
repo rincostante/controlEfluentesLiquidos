@@ -33,7 +33,7 @@ public class HistorialDeclaraciones implements Serializable {
     private Long id;
     
  
-    private Establecimiento establecimiento; // ver este atributo-----
+    private Long establecimiento; // ver este atributo-----
 
     @OneToOne
     private DeclaracionJurada declaracion; 
@@ -54,11 +54,11 @@ public class HistorialDeclaraciones implements Serializable {
         this.id = id;
     }
 
-    public Establecimiento getEstablecimiento() {
+    public Long getEstablecimiento() {
         return establecimiento;
     }
 
-    public void setEstablecimiento(Establecimiento establecimiento) {
+    public void setEstablecimiento(Long establecimiento) {
         this.establecimiento = establecimiento;
     }
 
