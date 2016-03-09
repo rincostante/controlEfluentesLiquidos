@@ -27,15 +27,16 @@ public class FuenteAbasto implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    private String tipo;    
+    @Column (nullable=false, length=10, unique=false)
+    @NotNull(message = "{entidades.fieldNotNullError}")
+    @Size(message = "{endidades.stringSizeError}", min = 1, max = 10)
+    private String tipo;         
+    
     
     @Column (nullable=false, length=100, unique=false)
     @NotNull(message = "{entidades.fieldNotNullError}")
     @Size(message = "{endidades.stringSizeError}", min = 1, max = 100)
     private String descripcion;
-    
-    @OneToOne
-    private Abasto abasto;    
     
 
     public Long getId() {
@@ -62,13 +63,6 @@ public class FuenteAbasto implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Abasto getAbasto() {
-        return abasto;
-    }
-
-    public void setAbasto(Abasto abasto) {
-        this.abasto = abasto;
-    }
 
     @Override
     public int hashCode() {

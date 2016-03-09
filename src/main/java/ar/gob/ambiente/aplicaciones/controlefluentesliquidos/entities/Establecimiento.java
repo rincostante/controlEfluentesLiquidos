@@ -77,8 +77,8 @@ public class Establecimiento implements Serializable {
     @OneToMany(mappedBy="establecimiento")
     private List<HistorialFirmantes> historialFirmantes;
     
-    @Column
-    private long[] historialDeclaraciones;
+    @OneToMany(mappedBy="establecimiento")
+    private List<HistorialDeclaraciones> historialDeclaraciones;
     
     @Column (nullable=false)
     @NotNull(message = "{entidades.fieldNotNullError}")
@@ -103,6 +103,11 @@ public class Establecimiento implements Serializable {
     @Size(message = "{endidades.stringSizeError}", min = 1, max = 20)
     private String procProduct;
     
+    @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    @NotNull(message = "{enitdades.objectNotNullError}") 
+    private AdminEntidad admin;    
+    
+    
     
     public Long getId() {
         return id;
@@ -110,6 +115,78 @@ public class Establecimiento implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public AdminEntidad getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(AdminEntidad admin) {
+        this.admin = admin;
+    }
+
+    public String getRazonSocial() {
+        return razonSocial;
+    }
+
+    public void setRazonSocial(String razonSocial) {
+        this.razonSocial = razonSocial;
+    }
+
+    public List<HistorialActividades> getHistorialActividades() {
+        return historialActividades;
+    }
+
+    public void setHistorialActividades(List<HistorialActividades> historialActividades) {
+        this.historialActividades = historialActividades;
+    }
+
+    public List<HistorialFirmantes> getHistorialFirmantes() {
+        return historialFirmantes;
+    }
+
+    public void setHistorialFirmantes(List<HistorialFirmantes> historialFirmantes) {
+        this.historialFirmantes = historialFirmantes;
+    }
+
+    public List<HistorialDeclaraciones> getHistorialDeclaraciones() {
+        return historialDeclaraciones;
+    }
+
+    public void setHistorialDeclaraciones(List<HistorialDeclaraciones> historialDeclaraciones) {
+        this.historialDeclaraciones = historialDeclaraciones;
+    }
+
+    public Long getNumero() {
+        return numero;
+    }
+
+    public void setNumero(Long numero) {
+        this.numero = numero;
+    }
+
+    public Partido getPartido() {
+        return partido;
+    }
+
+    public void setPartido(Partido partido) {
+        this.partido = partido;
+    }
+
+    public String getCodPostal() {
+        return codPostal;
+    }
+
+    public void setCodPostal(String codPostal) {
+        this.codPostal = codPostal;
+    }
+
+    public String getPartInmob() {
+        return partInmob;
+    }
+
+    public void setPartInmob(String partInmob) {
+        this.partInmob = partInmob;
     }
 
     public Long getIdRupEst() {

@@ -8,12 +8,18 @@ package ar.gob.ambiente.aplicaciones.controlefluentesliquidos.entities;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -26,14 +32,18 @@ public class OrigenAbasto implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    @OneToOne
-    private Abasto abasto;    
+    @Column (nullable=false, length=10, unique=false)
+    @NotNull(message = "{entidades.fieldNotNullError}")
+    @Size(message = "{endidades.stringSizeError}", min = 1, max = 10)
+    private String tipo;         
     
-    @OneToMany(mappedBy="caudalabasto")
-    private List<CaudalAbasto> caudales; 
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name="caudalabasto_id")
+    private List<CaudalAbasto> caudales;
     
-    @OneToMany(mappedBy="circuitoabasto")
-    private List<CircuitoAbasto> circuitos; 
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name="circuitoabasto_id")
+    private List<CircuitoAbasto> circuitos;
 
     public Long getId() {
         return id;
@@ -43,12 +53,12 @@ public class OrigenAbasto implements Serializable {
         this.id = id;
     }
 
-    public Abasto getAbasto() {
-        return abasto;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setAbasto(Abasto abasto) {
-        this.abasto = abasto;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public List<CaudalAbasto> getCaudales() {
@@ -66,6 +76,7 @@ public class OrigenAbasto implements Serializable {
     public void setCircuitos(List<CircuitoAbasto> circuitos) {
         this.circuitos = circuitos;
     }
+
 
     @Override
     public int hashCode() {

@@ -1,4 +1,4 @@
-/*
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -13,7 +13,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -28,17 +31,22 @@ public class Descarga implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    @OneToMany(mappedBy="vuelco")
-    private List<Vuelco> vuelcos; 
+    @OneToOne(mappedBy="descarga")
+    private Vuelco vuelco;
     
+    @ManyToOne
+    @JoinColumn(name="curso_id")
+    private Curso curso;
+   
+    @ManyToOne
+    @JoinColumn(name="aforo_id")
+    private Aforo aforo;
+
     @Column (nullable=false, length=5, unique=false)
     @NotNull(message = "{entidades.fieldNotNullError}")
     @Size(message = "{endidades.stringSizeError}", min = 1, max = 5)
     private Integer numOrden;         
-    
-    @OneToMany(mappedBy="curso")
-    private List<Curso> cursos; 
-    
+        
     @Column (nullable=false, length=10, unique=false)
     @NotNull(message = "{entidades.fieldNotNullError}")
     @Size(message = "{endidades.stringSizeError}", min = 1, max = 10)
@@ -49,11 +57,9 @@ public class Descarga implements Serializable {
     @Size(message = "{endidades.stringSizeError}", min = 1, max = 5)
     private Integer caudal;         
     
-    @OneToMany(mappedBy="aforo")
-    private List<Aforo> aforos; 
-
-    @OneToMany(mappedBy="operador")
-    private List<Operador> operadores; 
+    @ManyToOne
+    @JoinColumn(name="operador_id")
+    private Operador operador;
 
     @Column (nullable=false, length=100, unique=false)
     @NotNull(message = "{entidades.fieldNotNullError}")
@@ -113,12 +119,20 @@ public class Descarga implements Serializable {
         this.id = id;
     }
 
-    public List<Vuelco> getVuelcos() {
-        return vuelcos;
+    public Curso getCurso() {
+        return curso;
     }
 
-    public void setVuelcos(List<Vuelco> vuelcos) {
-        this.vuelcos = vuelcos;
+    public void setCurso(Curso curso) {
+        this.curso = curso;
+    }
+
+    public Vuelco getVuelco() {
+        return vuelco;
+    }
+
+    public void setVuelco(Vuelco vuelco) {
+        this.vuelco = vuelco;
     }
 
     public Integer getNumOrden() {
@@ -127,14 +141,6 @@ public class Descarga implements Serializable {
 
     public void setNumOrden(Integer numOrden) {
         this.numOrden = numOrden;
-    }
-
-    public List<Curso> getCursos() {
-        return cursos;
-    }
-
-    public void setCursos(List<Curso> cursos) {
-        this.cursos = cursos;
     }
 
     public String getTipo() {
@@ -153,21 +159,22 @@ public class Descarga implements Serializable {
         this.caudal = caudal;
     }
 
-    public List<Aforo> getAforos() {
-        return aforos;
+    public Aforo getAforo() {
+        return aforo;
     }
 
-    public void setAforos(List<Aforo> aforos) {
-        this.aforos = aforos;
+    public void setAforo(Aforo aforo) {
+        this.aforo = aforo;
     }
 
-    public List<Operador> getOperadores() {
-        return operadores;
+    public Operador getOperador() {
+        return operador;
     }
 
-    public void setOperadores(List<Operador> operadores) {
-        this.operadores = operadores;
+    public void setOperador(Operador operador) {
+        this.operador = operador;
     }
+
 
     public String getPretratamiento() {
         return pretratamiento;

@@ -8,12 +8,15 @@ package ar.gob.ambiente.aplicaciones.controlefluentesliquidos.entities;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -43,12 +46,36 @@ public class Firmante implements Serializable {
     @OneToMany (mappedBy="firmante")
     private List<HistorialFirmantes> historialEstablecimientos;
     
+    @OneToMany (mappedBy="firmante")
+    private List<DeclaracionJurada> declaraciones;
+    
+    @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    @NotNull(message = "{enitdades.objectNotNullError}") 
+    private AdminEntidad admin;    
+    
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public AdminEntidad getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(AdminEntidad admin) {
+        this.admin = admin;
+    }
+
+    public List<DeclaracionJurada> getDeclaraciones() {
+        return declaraciones;
+    }
+
+    public void setDeclaraciones(List<DeclaracionJurada> declaraciones) {
+        this.declaraciones = declaraciones;
     }
     
     public Long getIdRupFis() {

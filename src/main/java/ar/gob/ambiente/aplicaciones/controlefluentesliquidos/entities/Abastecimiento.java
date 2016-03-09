@@ -8,10 +8,13 @@ package ar.gob.ambiente.aplicaciones.controlefluentesliquidos.entities;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -26,14 +29,16 @@ public class Abastecimiento implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    @OneToMany(mappedBy="abasto")
-    private List<Abasto> abastos; 
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name="abastecimiento_id")
+    private List<Abasto> abastos;
     
-    @OneToMany(mappedBy="pozo")
-    private List<Pozo> pozos; 
-    
-    @OneToOne
-    private DeclaracionJurada declaracion;    
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name="abastecimiento_id")
+    private List<Pozo> pozos;
+   
+    @OneToOne(mappedBy="abastecimiento")
+    private DeclaracionJurada declaracion;
 
     public Long getId() {
         return id;

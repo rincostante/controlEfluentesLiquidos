@@ -8,11 +8,15 @@ package ar.gob.ambiente.aplicaciones.controlefluentesliquidos.entities;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
@@ -38,54 +42,77 @@ public class DeclaracionJurada implements Serializable {
     @NotNull(message = "{entidades.fieldNotNullError}")
     @Size(message = "{endidades.stringSizeError}", min = 1, max = 100)
     private String razonSocial;         
+  
+    @ManyToOne
+    @JoinColumn(name="firmante_id")
+    private Firmante firmante;
 
-    @Column (nullable=false, length=100, unique=false)
-    @NotNull(message = "{entidades.fieldNotNullError}")
-    @Size(message = "{endidades.stringSizeError}", min = 1, max = 100)
-    private String firmante;         
-    // Hay que ver esto ***********
+    @OneToOne
+    @JoinColumn(name="recibo_id")
+    private Recibo recibo;
+       
+    @OneToOne(mappedBy="declaracion")
+    private HistorialDeclaraciones Historial;
+
+    @OneToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="horario_id")
+    private Horario horarioTrabajo;   
     
-    
-    @OneToMany(mappedBy="recibo")
-    private List<Recibo> recibos;    
-    
-    @OneToMany(mappedBy="horarioTrabajo")
-    private List<Horario> horarios; 
-    
-    @OneToMany(mappedBy="vuelco")
-    private List<Vuelco> vuelcos; 
-    
-    @OneToMany(mappedBy="barro")
-    private List<Barro> barros; 
-    
+    @OneToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="vuelco_id")
+    private Vuelco vuelco;   
+      
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name="decalaracion_id")
+    private List<Barro> barros;
+
     @Column (nullable=false)
     private Boolean inscriptoDrp;    
     
     @Column (nullable=false, length=100, unique=false)
     @NotNull(message = "{entidades.fieldNotNullError}")
     @Size(message = "{endidades.stringSizeError}", min = 1, max = 100)
-    private String expediente;         
-
-    @OneToMany(mappedBy="croquis")
-    private List<Croquis> croquiss; 
-
-    @OneToMany(mappedBy="producto")
-    private List<Producto> productos; 
+    private String expediente;
     
-    @OneToMany(mappedBy="abastecimiento")
-    private List<Abastecimiento> abastecimientos; 
+    @OneToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="croquis_id")
+    private Croquis croquis;   
+
+
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name="decalaracion_id")
+    private List<Producto> productos;
+    
+    @OneToOne
+    @JoinColumn(name="abastecimiento_id")
+    private Abastecimiento abastecimiento;
    
-    @Column (nullable=false, length=10, unique=false)
-    @NotNull(message = "{entidades.fieldNotNullError}")
-    @Size(message = "{endidades.stringSizeError}", min = 1, max = 10)
-    private Long admin;         
-    
+    @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    @NotNull(message = "{enitdades.objectNotNullError}") 
+    private AdminEntidad admin;    
+
     public Long getId() {
-        return id;
+    return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public HistorialDeclaraciones getHistorial() {
+        return Historial;
+    }
+
+    public void setHistorial(HistorialDeclaraciones Historial) {
+        this.Historial = Historial;
+    }
+
+    public Firmante getFirmante() {
+        return firmante;
+    }
+
+    public void setFirmante(Firmante firmante) {
+        this.firmante = firmante;
     }
 
     public Long getCuit() {
@@ -104,36 +131,28 @@ public class DeclaracionJurada implements Serializable {
         this.razonSocial = razonSocial;
     }
 
-    public String getFirmante() {
-        return firmante;
+    public Recibo getRecibo() {
+        return recibo;
     }
 
-    public void setFirmante(String firmante) {
-        this.firmante = firmante;
+    public void setRecibo(Recibo recibo) {
+        this.recibo = recibo;
     }
 
-    public List<Recibo> getRecibos() {
-        return recibos;
+    public Horario getHorarioTrabajo() {
+        return horarioTrabajo;
     }
 
-    public void setRecibos(List<Recibo> recibos) {
-        this.recibos = recibos;
+    public void setHorarioTrabajo(Horario horarioTrabajo) {
+        this.horarioTrabajo = horarioTrabajo;
     }
 
-    public List<Horario> getHorarios() {
-        return horarios;
+    public Vuelco getVuelco() {
+        return vuelco;
     }
 
-    public void setHorarios(List<Horario> horarios) {
-        this.horarios = horarios;
-    }
-
-    public List<Vuelco> getVuelcos() {
-        return vuelcos;
-    }
-
-    public void setVuelcos(List<Vuelco> vuelcos) {
-        this.vuelcos = vuelcos;
+    public void setVuelco(Vuelco vuelco) {
+        this.vuelco = vuelco;
     }
 
     public List<Barro> getBarros() {
@@ -142,6 +161,14 @@ public class DeclaracionJurada implements Serializable {
 
     public void setBarros(List<Barro> barros) {
         this.barros = barros;
+    }
+
+    public Croquis getCroquis() {
+        return croquis;
+    }
+
+    public void setCroquis(Croquis croquis) {
+        this.croquis = croquis;
     }
 
     public Boolean isInscriptoDrp() {
@@ -160,14 +187,6 @@ public class DeclaracionJurada implements Serializable {
         this.expediente = expediente;
     }
 
-    public List<Croquis> getCroquiss() {
-        return croquiss;
-    }
-
-    public void setCroquiss(List<Croquis> croquiss) {
-        this.croquiss = croquiss;
-    }
-
     public List<Producto> getProductos() {
         return productos;
     }
@@ -176,21 +195,26 @@ public class DeclaracionJurada implements Serializable {
         this.productos = productos;
     }
 
-    public List<Abastecimiento> getAbastecimientos() {
-        return abastecimientos;
+    public Abastecimiento getAbastecimiento() {
+        return abastecimiento;
     }
 
-    public void setAbastecimientos(List<Abastecimiento> abastecimientos) {
-        this.abastecimientos = abastecimientos;
+    public void setAbastecimiento(Abastecimiento abastecimiento) {
+        this.abastecimiento = abastecimiento;
     }
 
-    public Long getAdmin() {
+    public AdminEntidad getAdmin() {
         return admin;
     }
 
-    public void setAdmin(Long admin) {
+    public void setAdmin(AdminEntidad admin) {
         this.admin = admin;
     }
+
+
+
+ 
+
 
 
     @Override

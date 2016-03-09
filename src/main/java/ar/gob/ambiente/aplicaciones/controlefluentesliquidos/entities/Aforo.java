@@ -33,8 +33,8 @@ public class Aforo implements Serializable {
     @Size(message = "{endidades.stringSizeError}", min = 1, max = 100)
     private String nombre;         
     
-    @OneToMany(mappedBy="descarga")
-    private List<Descarga> descargas;
+    @OneToMany(mappedBy="aforo")
+    private List< Descarga > descargas;
     
     
     public Long getId() {
@@ -60,9 +60,6 @@ public class Aforo implements Serializable {
     public void setDescargas(List<Descarga> descargas) {
         this.descargas = descargas;
     }
-
-
-    
     
     @Override
     public int hashCode() {

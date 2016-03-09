@@ -9,12 +9,15 @@ package ar.gob.ambiente.aplicaciones.controlefluentesliquidos.entities;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -36,18 +39,17 @@ public class Recibo implements Serializable {
     @Size(message = "{endidades.stringSizeError}", min = 1, max = 10)
     private String codigo;         
 
-    @OneToMany(mappedBy="declaracion")
-    private List<DeclaracionJurada> declaracionjuradas;
+    @OneToOne(mappedBy="recibo")
+    private DeclaracionJurada declaracion;
     
     @Temporal(TemporalType.DATE)
     @Column(nullable=false)
     @NotNull(message = "{entidades.fieldNotNullError}")
     private Date fecha;    
     
-    @Column (nullable=false, length=10, unique=false)
-    @NotNull(message = "{entidades.fieldNotNullError}")
-    @Size(message = "{endidades.stringSizeError}", min = 1, max = 10)
-    private Long admin;         
+    @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    @NotNull(message = "{enitdades.objectNotNullError}") 
+    private AdminEntidad admin;    
 
     
     public Long getId() {
@@ -66,13 +68,14 @@ public class Recibo implements Serializable {
         this.codigo = codigo;
     }
 
-    public List<DeclaracionJurada> getDeclaracionjuradas() {
-        return declaracionjuradas;
+    public DeclaracionJurada getDeclaracion() {
+        return declaracion;
     }
 
-    public void setDeclaracionjuradas(List<DeclaracionJurada> declaracionjuradas) {
-        this.declaracionjuradas = declaracionjuradas;
+    public void setDeclaracion(DeclaracionJurada declaracion) {
+        this.declaracion = declaracion;
     }
+
 
     public Date getFecha() {
         return fecha;
@@ -89,14 +92,15 @@ public class Recibo implements Serializable {
         return hash;
     }
 
-    public Long getAdmin() {
+    public AdminEntidad getAdmin() {
         return admin;
     }
 
-    public void setAdmin(Long admin) {
+    public void setAdmin(AdminEntidad admin) {
         this.admin = admin;
     }
 
+ 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set

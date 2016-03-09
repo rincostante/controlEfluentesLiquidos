@@ -10,11 +10,14 @@ import java.io.Serializable;
 import java.sql.Time;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -51,8 +54,9 @@ public class Dia implements Serializable {
     private Date horafin;    
     
     
-    @OneToMany(mappedBy="turno")
-    private List<Turno> turnos; 
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name="turno_id")
+    private List<Turno> turnos;
     
     public Long getId() {
         return id;
@@ -97,6 +101,7 @@ public class Dia implements Serializable {
     public void setTurnos(List<Turno> turnos) {
         this.turnos = turnos;
     }
+
 
 
 

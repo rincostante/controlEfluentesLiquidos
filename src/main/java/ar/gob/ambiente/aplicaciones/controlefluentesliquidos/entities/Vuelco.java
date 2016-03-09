@@ -8,12 +8,16 @@ package ar.gob.ambiente.aplicaciones.controlefluentesliquidos.entities;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -26,8 +30,13 @@ public class Vuelco implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    @OneToMany(mappedBy="descarga")
-    private List<Descarga> descargas;
+    @OneToOne(mappedBy="vuelco")
+    private DeclaracionJurada declaracion;
+    
+    
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name="descarga_id")
+    private List<Barro> decargas;
 
     @Column (nullable=false)
     private Boolean circCerrCirc;    
@@ -101,13 +110,22 @@ public class Vuelco implements Serializable {
         this.id = id;
     }
 
-    public List<Descarga> getDescargas() {
-        return descargas;
+    public DeclaracionJurada getDeclaracion() {
+        return declaracion;
     }
 
-    public void setDescargas(List<Descarga> descargas) {
-        this.descargas = descargas;
+    public void setDeclaracion(DeclaracionJurada declaracion) {
+        this.declaracion = declaracion;
     }
+
+    public List<Barro> getDecargas() {
+        return decargas;
+    }
+
+    public void setDecargas(List<Barro> decargas) {
+        this.decargas = decargas;
+    }
+
 
     public Boolean isCircCerrCirc() {
         return circCerrCirc;

@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
@@ -32,11 +33,14 @@ public class HistorialDeclaraciones implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
- 
-    private Long establecimiento; // ver este atributo-----
 
     @OneToOne
-    private DeclaracionJurada declaracion; 
+    @JoinColumn(name="establecimiento_id")
+    private Establecimiento establecimiento;
+    
+    @OneToOne
+    @JoinColumn(name="declaracionjurada_id")
+    private DeclaracionJurada declaracion;
     
     @Temporal(TemporalType.DATE)
     @Column(nullable=false)
@@ -44,7 +48,8 @@ public class HistorialDeclaraciones implements Serializable {
     private Date fecha;    
 
     @OneToOne
-    private DeclaracionJurada decAnterior; 
+    @JoinColumn(name="declaracionjurada_id")
+    private DeclaracionJurada decAnterior;
 
     public Long getId() {
         return id;
@@ -54,11 +59,11 @@ public class HistorialDeclaraciones implements Serializable {
         this.id = id;
     }
 
-    public Long getEstablecimiento() {
+    public Establecimiento getEstablecimiento() {
         return establecimiento;
     }
 
-    public void setEstablecimiento(Long establecimiento) {
+    public void setEstablecimiento(Establecimiento establecimiento) {
         this.establecimiento = establecimiento;
     }
 
@@ -85,8 +90,7 @@ public class HistorialDeclaraciones implements Serializable {
     public void setDecAnterior(DeclaracionJurada decAnterior) {
         this.decAnterior = decAnterior;
     }
-
-    
+   
     @Override
     public int hashCode() {
         int hash = 0;

@@ -8,10 +8,13 @@ package ar.gob.ambiente.aplicaciones.controlefluentesliquidos.entities;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -26,30 +29,10 @@ public class Horario implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    @OneToMany(mappedBy="descarga")
-    private List<Descarga> decargas; 
-    
-    @OneToOne
-    private DeclaracionJurada declaracion; 
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name="dia_id")
+    private List<Dia> dias;
 
-    @OneToMany(mappedBy="dia")
-    private List<Dia> dias; 
-
-    public List<Descarga> getDecargas() {
-        return decargas;
-    }
-
-    public void setDecargas(List<Descarga> decargas) {
-        this.decargas = decargas;
-    }
-
-    public DeclaracionJurada getDeclaracion() {
-        return declaracion;
-    }
-
-    public void setDeclaracion(DeclaracionJurada declaracion) {
-        this.declaracion = declaracion;
-    }
 
     public List<Dia> getDias() {
         return dias;

@@ -10,9 +10,14 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
@@ -29,12 +34,15 @@ public class Producto implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne
-    private DeclaracionJurada declaracion; 
-    
-    @OneToOne
-    private TipoMaterialProducto tipo; 
-    
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="declaracionJurada_id")
+    private DeclaracionJurada declaracion;
+  
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="tipomaterialproducto_id")
+    private TipoMaterialProducto tipo;
+
+   
     @Column (nullable=false, length=10, unique=false)
     @NotNull(message = "{entidades.fieldNotNullError}")
     @Size(message = "{endidades.stringSizeError}", min = 1, max = 10)
@@ -45,11 +53,17 @@ public class Producto implements Serializable {
     @Size(message = "{endidades.stringSizeError}", min = 1, max = 18)
     private Float cantAnual;         
     
-    @OneToOne
-    private TipoMaterialProducto unidad; 
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="unidad_id")
+    private Unidad unidad;
     
-    @OneToMany(mappedBy="materia")
-    private List<Materia> materias; 
+    @ManyToMany
+    @JoinTable(
+            name = "productosXMateria",
+            joinColumns = @JoinColumn(name = "producto_fk"),
+            inverseJoinColumns = @JoinColumn(name = "materia_fk")
+    )
+    private List<Materia> materias;    
 
     public DeclaracionJurada getDeclaracion() {
         return declaracion;
@@ -67,6 +81,9 @@ public class Producto implements Serializable {
         this.tipo = tipo;
     }
 
+
+ 
+
     public String getDescripcion() {
         return descripcion;
     }
@@ -83,11 +100,11 @@ public class Producto implements Serializable {
         this.cantAnual = cantAnual;
     }
 
-    public TipoMaterialProducto getUnidad() {
+    public Unidad getUnidad() {
         return unidad;
     }
 
-    public void setUnidad(TipoMaterialProducto unidad) {
+    public void setUnidad(Unidad unidad) {
         this.unidad = unidad;
     }
 
@@ -98,9 +115,8 @@ public class Producto implements Serializable {
     public void setMaterias(List<Materia> materias) {
         this.materias = materias;
     }
-    
 
-    
+   
     public Long getId() {
         return id;
     }

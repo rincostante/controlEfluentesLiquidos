@@ -34,11 +34,7 @@ public class Inmueble implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-    @JoinColumn(name="establecimiento_id")
-    private List<Establecimiento> establecimiento;
-    
+        
     @Column (nullable=false, length=20)
     @NotNull(message = "{entidades.fieldNotNullError}")
     @Size(message = "{endidades.stringSizeError}", min = 1, max = 20)
@@ -78,13 +74,6 @@ public class Inmueble implements Serializable {
         this.id = id;
     }
 
-    public List<Establecimiento> getEstablecimiento() {
-        return establecimiento;
-    }
-
-    public void setEstablecimiento(List<Establecimiento> establecimiento) {
-        this.establecimiento = establecimiento;
-    }
     
     public String getPartInmob() {
         return partInmob;

@@ -9,9 +9,12 @@ package ar.gob.ambiente.aplicaciones.controlefluentesliquidos.entities;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -65,8 +68,9 @@ public class Pozo implements Serializable {
     @Size(message = "{endidades.stringSizeError}", min = 1, max = 18)
     private Float profundidad;    
     
-    @OneToOne
-    private Abastecimiento abastecimiento; 
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="abastecimiento_id")
+    private Abastecimiento abastecimiento;
     
 
     public Long getId() {
@@ -149,6 +153,7 @@ public class Pozo implements Serializable {
         this.abastecimiento = abastecimiento;
     }
 
+ 
         @Override
     public int hashCode() {
         int hash = 0;

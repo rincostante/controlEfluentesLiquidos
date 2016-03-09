@@ -8,12 +8,15 @@ package ar.gob.ambiente.aplicaciones.controlefluentesliquidos.entities;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -53,13 +56,12 @@ public class Operador implements Serializable {
     @Size(message = "{endidades.stringSizeError}", min = 1, max = 100)
     private String razonSocial;         
     
-    @OneToMany(mappedBy="descarga")
-    private List<Descarga> descargas;
+    @OneToMany(mappedBy="operador")
+    private List< Descarga > descargas;
     
-    @Column (nullable=false, length=10, unique=false)
-    @NotNull(message = "{entidades.fieldNotNullError}")
-    @Size(message = "{endidades.stringSizeError}", min = 1, max = 10)
-    private Long admin;         
+    @OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    @NotNull(message = "{enitdades.objectNotNullError}") 
+    private AdminEntidad admin;    
     
     public Long getId() {
         return id;
@@ -117,16 +119,13 @@ public class Operador implements Serializable {
         this.descargas = descargas;
     }
 
-    public Long getAdmin() {
+    public AdminEntidad getAdmin() {
         return admin;
     }
 
-    public void setAdmin(Long admin) {
+    public void setAdmin(AdminEntidad admin) {
         this.admin = admin;
     }
-
-    
-    
     
     @Override
     public int hashCode() {

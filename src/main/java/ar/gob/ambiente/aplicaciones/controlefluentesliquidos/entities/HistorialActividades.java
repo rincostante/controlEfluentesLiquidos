@@ -34,7 +34,7 @@ public class HistorialActividades implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne /*(fetch=FetchType.LAZY)*/
+    @ManyToOne
     @JoinColumn(name="establecimiento_id")
     private Establecimiento establecimiento;
     
@@ -50,7 +50,7 @@ public class HistorialActividades implements Serializable {
     @Column 
     private int tiempoEstimado;
     
-    @ManyToOne /*(fetch=FetchType.LAZY)*/
+    @ManyToOne 
     @JoinColumn(name="usuario_id")
     private Usuario usuario;
     

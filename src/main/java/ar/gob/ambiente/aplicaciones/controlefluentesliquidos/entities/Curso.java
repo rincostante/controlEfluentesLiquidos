@@ -39,8 +39,8 @@ public class Curso implements Serializable {
     @Size(message = "{endidades.stringSizeError}", min = 1, max = 100)
     private String cuenca;
     
-    @OneToMany(mappedBy="descarga")
-    private List<Descarga> descargas;
+    @OneToMany(mappedBy="curso")
+    private List< Descarga > descargas;
 
     public Long getId() {
     return id;
@@ -73,8 +73,6 @@ public class Curso implements Serializable {
     public void setDescargas(List<Descarga> descargas) {
         this.descargas = descargas;
     }
-
-    
     
     
     

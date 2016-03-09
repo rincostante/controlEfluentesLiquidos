@@ -8,10 +8,14 @@ package ar.gob.ambiente.aplicaciones.controlefluentesliquidos.entities;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -26,18 +30,28 @@ public class Abasto implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    @OneToOne
-    private TipoAbasto tipo; 
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="tipoabasto_id")
+    private TipoAbasto tipo;
 
-    @OneToMany(mappedBy="origenabasto")
-    private List<OrigenAbasto> origenes; 
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name="origenesabasto_id")
+    private List<OrigenAbasto> origenes;
     
-    @OneToMany(mappedBy="fuenteabasto")
-    private List<FuenteAbasto> fuentes; 
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name="fuenteabasto_id")
+    private List<FuenteAbasto> fuentes;
 
-    @OneToMany(mappedBy="circuitoabasto")
-    private List<CircuitoAbasto> caudales; 
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name="circuitoabasto_id")
+    private List<CircuitoAbasto> caudales;
 
+   @ManyToOne(fetch=FetchType.LAZY)
+   @JoinColumn(name="abastecimeiento_id")
+   private Abastecimiento abastecimiento;
+
+    
+    
     public Long getId() {
         return id;
     }
@@ -78,6 +92,15 @@ public class Abasto implements Serializable {
         this.caudales = caudales;
     }
 
+    public Abastecimiento getAbastecimiento() {
+        return abastecimiento;
+    }
+
+    public void setAbastecimiento(Abastecimiento abastecimiento) {
+        this.abastecimiento = abastecimiento;
+    }
+
+   
     @Override
     public int hashCode() {
         int hash = 0;

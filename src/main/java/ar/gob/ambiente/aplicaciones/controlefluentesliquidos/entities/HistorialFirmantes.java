@@ -56,8 +56,59 @@ public class HistorialFirmantes implements Serializable {
     @Column
     private boolean accion;
     
-    @Column
+    
+    @ManyToOne 
+    @JoinColumn(name="usuario_id")
     private Usuario usuario;
+
+    public Establecimiento getEstablecimiento() {
+        return establecimiento;
+    }
+
+    public void setEstablecimiento(Establecimiento establecimiento) {
+        this.establecimiento = establecimiento;
+    }
+
+    public Firmante getFirmanteAnterior() {
+        return firmanteAnterior;
+    }
+
+    public void setFirmanteAnterior(Firmante firmanteAnterior) {
+        this.firmanteAnterior = firmanteAnterior;
+    }
+
+    public Firmante getFirmanteActual() {
+        return firmanteActual;
+    }
+
+    public void setFirmanteActual(Firmante firmanteActual) {
+        this.firmanteActual = firmanteActual;
+    }
+
+    public String getMotivo() {
+        return motivo;
+    }
+
+    public void setMotivo(String motivo) {
+        this.motivo = motivo;
+    }
+
+    public boolean isAccion() {
+        return accion;
+    }
+
+    public void setAccion(boolean accion) {
+        this.accion = accion;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+    
     
     @Transient
     String strFecha;

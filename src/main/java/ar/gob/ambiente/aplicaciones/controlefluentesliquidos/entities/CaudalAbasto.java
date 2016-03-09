@@ -9,9 +9,12 @@ package ar.gob.ambiente.aplicaciones.controlefluentesliquidos.entities;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -27,23 +30,14 @@ public class CaudalAbasto implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne
-    private TipoCaudal tipo;    
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="tipocaudal_id")
+    private TipoCaudal tipo;
     
     @Column (nullable=false, length=18, unique=false)
     @NotNull(message = "{entidades.fieldNotNullError}")
     @Size(message = "{endidades.stringSizeError}", min = 1, max = 18)
     private Float cantidad;    
-
-    @OneToOne
-    private Abasto abasto;    
-    
-    @OneToOne
-    private OrigenAbasto origen;    
-    
-    @OneToOne
-    private CircuitoAbasto circuito;
-    
 
     public Long getId() {
         return id;
@@ -61,36 +55,13 @@ public class CaudalAbasto implements Serializable {
         this.tipo = tipo;
     }
 
+ 
     public Float getCantidad() {
         return cantidad;
     }
 
     public void setCantidad(Float cantidad) {
         this.cantidad = cantidad;
-    }
-
-    public Abasto getAbasto() {
-        return abasto;
-    }
-
-    public void setAbasto(Abasto abasto) {
-        this.abasto = abasto;
-    }
-
-    public OrigenAbasto getOrigen() {
-        return origen;
-    }
-
-    public void setOrigen(OrigenAbasto origen) {
-        this.origen = origen;
-    }
-
-    public CircuitoAbasto getCircuito() {
-        return circuito;
-    }
-
-    public void setCircuito(CircuitoAbasto circuito) {
-        this.circuito = circuito;
     }
 
     @Override
